@@ -1,6 +1,7 @@
 package kz.iitu.spring_lab_01.service;
 
 import kz.iitu.spring_lab_01.audit.Audited;
+import kz.iitu.spring_lab_01.audit.SimpleCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class CatalogService {
     @Lazy
     private CatalogService self; // Ссылка на прокси-объект самого себя
 
+    @SimpleCache
     public String findById(long id) {
         sleep(50);
         return "Item no. " + id;
@@ -37,7 +39,7 @@ public class CatalogService {
     }
 
     public String removeTwice(long id) {
-        // Вызываем методы через self (прокси), чтобы аспекты сработали!
+        // Вызываем методы через self (прокси), чтобы аспекты сработали
         String first  = self.remove(id);
         String second = self.remove(id + 1);
         return first + "; " + second;
